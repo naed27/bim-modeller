@@ -1,10 +1,6 @@
 import type { 
     IfcLoader, 
     Components, 
-    SimpleScene, 
-    SimpleWorld,
-    SimpleCamera, 
-    SimpleRenderer, 
     FragmentsManager, 
 } from "@thatopen/components";
 import type { RefObject  } from "react"
