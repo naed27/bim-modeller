@@ -1,4 +1,5 @@
 import * as OBC from "@thatopen/components"
+import { clearFragments } from "./fragments"
 
 export default async function setupIfcLoader(components: OBC.Components) {
     const ifcLoader = components.get(OBC.IfcLoader)
@@ -39,11 +40,7 @@ export async function loadIfcFromFile({
 
       try {
         
-        fragments.list.forEach((model) => {
-          scene.three.remove(model.object)
-        })
-        fragments.list.clear()
-        fragments.core.update(true)
+        clearFragments({scene, fragments})
 
         const data = await file.arrayBuffer()
         const buffer = new Uint8Array(data)

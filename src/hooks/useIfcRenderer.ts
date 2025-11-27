@@ -57,11 +57,19 @@ export default function useIfcRenderer() {
         )
     }
 
+    const handleClearFragments = async () => {
+        ifcRenderer?.fragmentsManager?.clearFragments?.({
+            scene: ifcRenderer?.world?.scene,
+            fragments: ifcRenderer?.fragmentsManager?.fragments,
+        })
+    }
+
     return {
         ifcRenderer,
         containerRef,
         handleLoadIfcFile,
         handleLoadFragFile,
+        handleClearFragments,
         handleDownloadFragFile,
         isLoading, setIsLoading,
     }

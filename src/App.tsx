@@ -14,6 +14,7 @@ function App() {
     containerRef,
     handleLoadIfcFile,
     handleLoadFragFile,
+    handleClearFragments,
     handleDownloadFragFile,
   } = useIfcRenderer()
 
@@ -29,6 +30,9 @@ function App() {
             </BimPanelSection>
             <BimPanelSection label=".IFC Files">
               <BimButton label="Load IFC File" onClick={handleLoadIfcFile}/>
+            </BimPanelSection>
+            <BimPanelSection label="Canvas">
+              <BimButton label="Clear Canvas" onClick={handleClearFragments}/>
             </BimPanelSection>
           </BimPanel>
         </div>

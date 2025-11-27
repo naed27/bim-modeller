@@ -27,12 +27,33 @@ export default function setupFragmentsManager(
     if (fragments?.core) fragments.core.update(true)
   })
 
-  return { fragments, downloadFragments, loadFragFromFile }
+  return { fragments, downloadFragments, loadFragFromFile, clearFragments }
 }
 
-/**
- * Open file picker to select and load a .frag file
- */
+export const clearFragments = ({
+  scene,
+  fragments,
+}:{
+  scene: OBC.SimpleScene,
+  fragments: OBC.FragmentsManager,
+}) => {
+   fragments.list.forEach((model) => {
+      model.object.traverse((child: any) => {
+        if (child.geometry) child.geometry.dispose()
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((m?: any) => m.dispose())
+          } else {
+            child.material.dispose()
+          }
+        }
+      })
+      scene.three.remove(model.object)
+    })
+    fragments.list.clear()
+    fragments.core.update(true)
+}
+
 export async function loadFragFromFile({
   scene,
   camera,
@@ -57,22 +78,7 @@ export async function loadFragFromFile({
       if (!file) return reject("No file selected")
 
       try {
-        fragments.list.forEach((model) => {
-          model.object.traverse((child: any) => {
-            if (child.geometry) child.geometry.dispose()
-            if (child.material) {
-              if (Array.isArray(child.material)) {
-                child.material.forEach((m?: any) => m.dispose())
-              } else {
-                child.material.dispose()
-              }
-            }
-          })
-          scene.three.remove(model.object)
-        })
-
-        fragments.list.clear()
-        fragments.core.update(true)
+        clearFragments?.({ fragments, scene })
 
         const data = await file.arrayBuffer()
         const buffer = new Uint8Array(data)
