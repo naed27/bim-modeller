@@ -13,7 +13,7 @@ BIM Modeller is a web-based application designed for Building Information Modeli
 ## Tech Stack
 - **Frontend:** React / TypeScript
 - **3D Rendering:** Three.js / @thatopen/ui
-- **State Management:** React Context API / Redux (if applicable)
+- **State Management:** React Context API
 - **Version Control:** Git / GitHub
 
 ## Installation
