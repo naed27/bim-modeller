@@ -22,11 +22,11 @@ export async function loadIfcFromFile({
   onLoadEnd,
   onLoadStart,
 }:{
+  scene: OBC.SimpleScene,
   ifcLoader: OBC.IfcLoader,
   fragments: OBC.FragmentsManager,
-  scene: OBC.SimpleScene,
-  onLoadStart?: (...args: any) => void,
   onLoadEnd?: (...args: any) => void,
+  onLoadStart?: (...args: any) => void,
 }) {
   return new Promise<void>((resolve, reject) => {
     const input = document.createElement("input")
@@ -45,7 +45,14 @@ export async function loadIfcFromFile({
         const data = await file.arrayBuffer()
         const buffer = new Uint8Array(data)
 
-        await ifcLoader.load(buffer, false, file.name)
+        await ifcLoader.load(buffer, false, file.name, {
+          processData: {
+            progressCallback: (progress) => {
+              console.log('Loading Progress (%): ', (progress * 100));
+            },
+          },
+        })
+        
         resolve()
       } catch (err) {
         reject(err)

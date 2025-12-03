@@ -36,7 +36,9 @@ export default function useIfcRenderer() {
             ifcLoader: ifcRenderer?.ifcManager?.ifcLoader,
             fragments: ifcRenderer?.fragmentsManager?.fragments,
             onLoadStart: ()=> setIsLoading?.(true),
-            onLoadEnd: ()=> setIsLoading?.(false),
+            onLoadEnd: ()=> {
+                setIsLoading?.(false)
+            },
         })
     }
     

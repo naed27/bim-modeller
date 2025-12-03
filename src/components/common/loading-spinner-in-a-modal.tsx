@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 
 export default function LoadingSpinnerInAModal({
   showWhen,
+  progressPercentage,
 }: {
   showWhen: boolean;
+  progressPercentage?: number | null;
 }) {
+
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -44,10 +47,11 @@ export default function LoadingSpinnerInAModal({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-99999 flex items-center justify-center bg-black/60"
+      className="fixed inset-0 z-99999 flex items-center justify-center bg-black/60 flex-col gap-2"
       style={{ pointerEvents: "auto" }}
     >
       <div className="h-12 w-12 animate-spin rounded-full border-4 border-info border-t-transparent" />
+      {progressPercentage && <p>{progressPercentage +' %'}</p>}
     </div>,
     document.body
   );
