@@ -1,5 +1,5 @@
 import * as BUI from "@thatopen/ui"
-import useIfcRenderer from "./hooks/useIfcRenderer"
+import useIfcRenderer from "./hooks/use-ifc-renderer"
 import BimPanel from "./components/bim/basic/bim-panel"
 import BimButton from "./components/bim/basic/bim-button"
 import BimPanelSection from "./components/bim/basic/bim-panel-section"
@@ -17,7 +17,7 @@ function App() {
     handleClearFragments,
     handleDownloadFragFile,
   } = useIfcRenderer()
-
+  
   return (
     <>
       <div className="fixed inset-0" ref={containerRef} />

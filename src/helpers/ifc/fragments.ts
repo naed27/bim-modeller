@@ -3,9 +3,6 @@ import { PerspectiveCamera, OrthographicCamera } from "three"
 
 const WORKER_URL = "/engine_fragment/worker.mjs"
 
-/**
- * Setup FragmentsManager and attach it to the world
- */
 export default function setupFragmentsManager(
   components: OBC.Components,
   world: OBC.World
@@ -14,12 +11,17 @@ export default function setupFragmentsManager(
 
   fragments.init(WORKER_URL)
 
-  // Update fragments core whenever the camera rest event occurs
   world?.camera?.controls?.addEventListener?.("rest", () => {
-    if (fragments?.core) fragments.core.update(true)
+    fragments?.core?.update?.(true)
   })
+  
+  world.onCameraChanged.add((camera) => {
+    for (const [, model] of fragments?.list) {
+      model?.useCamera?.(camera?.three);
+    }
+    fragments?.core?.update?.(true);
+  });
 
-  // Add fragments model to the world scene when set
   fragments.list.onItemSet.add(({ value: model }: { value: any }) => {
     if (!model) return
     if (model.useCamera && world?.camera?.three) model.useCamera(world.camera.three)

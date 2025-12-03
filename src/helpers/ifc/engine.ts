@@ -1,4 +1,6 @@
 import * as OBC from "@thatopen/components"
+import * as OBF from "@thatopen/components-front"
+
 
 export const INITIAL_CAMERA_POSITION = {
     targetX: 26,
@@ -23,8 +25,8 @@ export default async function initializeEngine(container: HTMLElement) {
 
     world.scene = new OBC.SimpleScene(components);
     
-    world.renderer = new OBC.SimpleRenderer(components, container);
-    world.camera = new OBC.SimpleCamera(components);
+    world.renderer = new OBF.PostproductionRenderer(components, container);
+    world.camera = new OBC.OrthoPerspectiveCamera(components);
 
     world.scene.setup();
     world.scene.three.background = null;

@@ -20,9 +20,7 @@ export default function useIfcRenderer() {
         }
     },[])
 
-    useLayoutEffect(() => { 
-        initializeWorld?.()
-     }, [initializeWorld])
+    useLayoutEffect(() => { initializeWorld?.() }, [initializeWorld])
 
     useLayoutEffect(() => {
         return () => {
@@ -51,7 +49,6 @@ export default function useIfcRenderer() {
             onLoadEnd: ()=> setIsLoading?.(false),
         })
     }
-
     
     const handleDownloadFragFile = async () => {
         ifcRenderer?.fragmentsManager?.downloadFragments?.(
