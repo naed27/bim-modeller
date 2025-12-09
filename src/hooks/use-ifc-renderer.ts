@@ -1,75 +1,46 @@
 
-import { generateIfcRenderer } from "../lib/world"
+import ENGINE from "@/lib/that-open/instance"
+import { loadIfcFile } from "@/lib/that-open/helpers/ifc-helpers"
 import { useCallback, useLayoutEffect, useRef, useState } from "react"
+import { clearFragments, downloadFragments, loadFragFile } from "@/lib/that-open/helpers/fragment-helpers"
 
 export default function useIfcRenderer() {
 
     const initialized = useRef(false)
     const containerRef = useRef<HTMLDivElement>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [ifcRenderer, setIfcRenderer] = useState<null | Awaited<ReturnType<typeof generateIfcRenderer>>>(null)
 
     const initializeWorld = useCallback(async()=>{
         if (initialized.current) return
         initialized.current = true
-        if (containerRef.current) {
-            const generatedIfcRenderer = await generateIfcRenderer({
-                containerElement: containerRef.current,
-            })
-            setIfcRenderer?.(generatedIfcRenderer)
-        }
+        if (!containerRef.current) return
+        await ENGINE.generateEngine(containerRef.current)
     },[])
 
-    useLayoutEffect(() => { initializeWorld?.() }, [initializeWorld])
-
-    useLayoutEffect(() => {
-        return () => {
-            ifcRenderer?.components?.dispose?.()
-        }
-    }, [ifcRenderer])
+    useLayoutEffect(() => { 
+        initializeWorld?.() 
+    }, [initializeWorld])
 
     const handleLoadIfcFile = async ()=>{
-        await ifcRenderer?.ifcManager?.loadIfcFromFile?.({
-            scene: ifcRenderer?.world?.scene,
-            ifcLoader: ifcRenderer?.ifcManager?.ifcLoader,
-            fragments: ifcRenderer?.fragmentsManager?.fragments,
-            onLoadStart: ()=> setIsLoading?.(true),
-            onLoadEnd: ()=> {
-                setIsLoading?.(false)
-            },
-        })
-    }
-    
-    const handleLoadFragFile = async ()=>{
-        await ifcRenderer?.fragmentsManager?.loadFragFromFile({
-            scene: ifcRenderer?.world?.scene,
-            camera: ifcRenderer.world!.camera?.three,
-            fragments: ifcRenderer?.fragmentsManager?.fragments,
+        await loadIfcFile?.({
             onLoadStart: ()=> setIsLoading?.(true),
             onLoadEnd: ()=> setIsLoading?.(false),
         })
     }
     
-    const handleDownloadFragFile = async () => {
-        ifcRenderer?.fragmentsManager?.downloadFragments?.(
-            ifcRenderer?.fragmentsManager?.fragments
-        )
-    }
-
-    const handleClearFragments = async () => {
-        ifcRenderer?.fragmentsManager?.clearFragments?.({
-            scene: ifcRenderer?.world?.scene,
-            fragments: ifcRenderer?.fragmentsManager?.fragments,
+    const handleLoadFragFile = async ()=>{
+        await loadFragFile({
+            onLoadStart: ()=> setIsLoading?.(true),
+            onLoadEnd: ()=> setIsLoading?.(false),
         })
     }
 
     return {
-        ifcRenderer,
         containerRef,
         handleLoadIfcFile,
         handleLoadFragFile,
-        handleClearFragments,
-        handleDownloadFragFile,
         isLoading, setIsLoading,
+        handleClearFragments: clearFragments,
+        handleDownloadFragFile: ()=>downloadFragments?.(),
     }
 }

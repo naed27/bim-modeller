@@ -1,51 +1,41 @@
-import * as OBC from "@thatopen/components"
-import { clearFragments } from "./fragments"
+import ENGINE from "@/lib/that-open/instance"
+import { clearFragments } from "@/lib/that-open/helpers/fragment-helpers"
+import { IFC_LOADER_WASM_PATH, INPUT_ACCEPT_IFC, INPUT_TYPE } from "../constants"
 
-export default async function setupIfcLoader(components: OBC.Components) {
-    const ifcLoader = components.get(OBC.IfcLoader)
-
-    await ifcLoader.setup({
+export async function setupIfcLoader() {
+    await ENGINE.ifcLoader.setup({
         autoSetWasm: false,
         wasm: {
             absolute: true,
-            path: "https://unpkg.com/web-ifc@0.0.72/",
+            path: IFC_LOADER_WASM_PATH,
         }
     })
-
-    return { ifcLoader, loadIfcFromFile }
 }
 
-export async function loadIfcFromFile({
-  scene,
-  ifcLoader,
-  fragments,
+export async function loadIfcFile({
   onLoadEnd,
   onLoadStart,
 }:{
-  scene: OBC.SimpleScene,
-  ifcLoader: OBC.IfcLoader,
-  fragments: OBC.FragmentsManager,
   onLoadEnd?: (...args: any) => void,
   onLoadStart?: (...args: any) => void,
 }) {
   return new Promise<void>((resolve, reject) => {
-    const input = document.createElement("input")
-    input.type = "file"
-    input.accept = ".ifc"
+    const input = document.createElement('input')
+    input.type = INPUT_TYPE
+    input.accept = INPUT_ACCEPT_IFC
 
     input.onchange = async () => {
       onLoadStart?.()
       const file = input.files?.[0]
-      if (!file) return reject("No file selected")
+      if (!file) return reject()
 
       try {
         
-        clearFragments({scene, fragments})
-
+        clearFragments()
         const data = await file.arrayBuffer()
         const buffer = new Uint8Array(data)
 
-        await ifcLoader.load(buffer, false, file.name, {
+        await ENGINE.ifcLoader.load(buffer, false, file.name, {
           processData: {
             progressCallback: (progress) => {
               console.log('Loading Progress (%): ', (progress * 100));

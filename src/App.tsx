@@ -1,3 +1,4 @@
+import '@/lib/that-open/instance'
 import * as BUI from "@thatopen/ui"
 import useIfcRenderer from "./hooks/use-ifc-renderer"
 import BimPanel from "./components/bim/basic/bim-panel"

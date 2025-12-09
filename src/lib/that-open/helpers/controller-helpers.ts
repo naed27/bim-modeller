@@ -1,6 +1,5 @@
-// controller.ts
 import { Vector3, Matrix4 } from "three"
-import type { SimpleCamera } from "@thatopen/components"
+import ENGINE from "@/lib/that-open/instance"
 
 const TARGET = new Vector3()
 const POSITION = new Vector3()
@@ -9,18 +8,16 @@ const RIGHT = new Vector3()
 const UP = new Vector3(0, 1, 0)
 
 type ControllerOptions = {
-    camera: SimpleCamera
     speed?: number
     rotationSpeed?: number
 }
 
-export default function setupController({
-    camera,
+export function setupController({
     speed = 1,
     rotationSpeed = 0.033,
 }: ControllerOptions) {
 
-    const controls = camera.controls
+    const controls = ENGINE.world.camera.controls
     controls.enabled = true
 
     // --- Key tracking ---
