@@ -15,4 +15,6 @@ export const INPUT_ACCEPT_IFC = '.ifc'
 export const INPUT_ACCEP_FRAG = '.frag'
 export const DEFAULT_FILE_NAME = 'untitled.frag'
 
+export const CONTROLLER_SPEED = 1
+
 export const WORKER_URL = "/engine_fragment/worker.mjs"

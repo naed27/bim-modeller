@@ -1,11 +1,12 @@
 import * as OBC from "@thatopen/components"
+import { CONTROLLER_SPEED } from "./constants"
 import * as OBF from "@thatopen/components-front"
-import { setupWorld }  from "@/lib/that-open/helpers/world-helpers";
-import { setupIfcLoader } from "@/lib/that-open/helpers/ifc-helpers";
-import { setupController } from "@/lib/that-open/helpers/controller-helpers";
-import { setupHighlighter } from "@/lib/that-open/helpers/highlighter-helpers";
-import { setupFragmentsManager } from "@/lib/that-open/helpers/fragment-helpers";
-import { resetCamera } from "./helpers/camera-helpers";
+import { resetCamera } from "./helpers/camera-helpers"
+import { setupWorld }  from "@/lib/that-open/helpers/world-helpers"
+import { setupIfcLoader } from "@/lib/that-open/helpers/ifc-helpers"
+import { setupController } from "@/lib/that-open/helpers/controller-helpers"
+import { setupHighlighter } from "@/lib/that-open/helpers/highlighter-helpers"
+import { setupFragmentsManager } from "@/lib/that-open/helpers/fragment-helpers"
 
 const components = new OBC.Components()
 
@@ -25,7 +26,7 @@ const generateEngine = async (containerElement: HTMLDivElement) => {
     await setupWorld(containerElement)
     await setupIfcLoader()
     setupFragmentsManager()
-    setupController({ speed: 1 })
+    setupController({ speed: CONTROLLER_SPEED })
     setupHighlighter()
     resetCamera()
     return {}

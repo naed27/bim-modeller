@@ -4,11 +4,27 @@ import { loadIfcFile } from "@/lib/that-open/helpers/ifc-helpers"
 import { useCallback, useLayoutEffect, useRef, useState } from "react"
 import { clearFragments, downloadFragments, loadFragFile } from "@/lib/that-open/helpers/fragment-helpers"
 
-export default function useIfcRenderer() {
+export default function useBimEngineLogic({
+    onLoadEndCallback,
+    onLoadStartCallback,
+}:{
+    onLoadEndCallback?: (...args: any)=>any
+    onLoadStartCallback?: (...args: any)=>any
+}={}) {
 
     const initialized = useRef(false)
     const containerRef = useRef<HTMLDivElement>(null)
     const [isLoading, setIsLoading] = useState(false)
+
+    const onLoadStart = () => {
+        setIsLoading?.(true)
+        onLoadStartCallback?.()
+    }
+
+    const onLoadEnd = () => {
+        setIsLoading?.(false)
+        onLoadEndCallback?.()
+    }
 
     const initializeWorld = useCallback(async()=>{
         if (initialized.current) return
@@ -21,19 +37,9 @@ export default function useIfcRenderer() {
         initializeWorld?.() 
     }, [initializeWorld])
 
-    const handleLoadIfcFile = async ()=>{
-        await loadIfcFile?.({
-            onLoadStart: ()=> setIsLoading?.(true),
-            onLoadEnd: ()=> setIsLoading?.(false),
-        })
-    }
+    const handleLoadIfcFile = async ()=> await loadIfcFile?.({ onLoadStart,  onLoadEnd })
     
-    const handleLoadFragFile = async ()=>{
-        await loadFragFile({
-            onLoadStart: ()=> setIsLoading?.(true),
-            onLoadEnd: ()=> setIsLoading?.(false),
-        })
-    }
+    const handleLoadFragFile = async ()=> await loadFragFile?.({ onLoadStart,  onLoadEnd })
 
     return {
         containerRef,
