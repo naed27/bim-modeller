@@ -23,7 +23,7 @@ const MemoizedSwarm = memo(NivoSwarmplot);
 function SmartChartDemo({
     className,
     type = 'bar',
-    refreshData = false,
+    refreshData = true,
     refreshDataInterval = 1000
 }:{
     className?: string

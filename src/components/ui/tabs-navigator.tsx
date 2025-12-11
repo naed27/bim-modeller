@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useLayoutEffect, useState } from "react";
 
 interface Tab {
   title: string;
@@ -7,34 +7,37 @@ interface Tab {
   className?: string;
 }
 
-interface TabsNavigatorProps {
-  tabs: Tab[];
-  initialTab?: number;
-}
-
-export const TabsNavigator: React.FC<TabsNavigatorProps> = ({
+export const TabsNavigator = ({
   tabs,
-  initialTab = 0,
+  currentTab = 0,
+}: {
+  tabs: Tab[];
+  currentTab?: number,
 }) => {
-  const [activeTab, setActiveTab] = useState(initialTab);
+
+  const [activeTab, setActiveTab] = useState(0);
+
+  useLayoutEffect(()=>{
+    setActiveTab(currentTab)
+  },[currentTab])
 
   return (
-    <div className="relative flex h-full flex-col bg-inherit">
-      <div className="mb-4 flex overflow-x-auto border-b border-gray-500 bg-inherit md:justify-center">
-        {tabs.map((tab, index) => (
-          <button
+    <div className="relative flex h-full bg-inherit overflow-hidden">
+      <div className="absolute inset-0 flex flex-col bg-inherit">
+        <div className="mb-4 flex overflow-x-auto border-b border-gray-500 bg-inherit md:justify-center">
+          {tabs.map((tab, index) => (
+            <button
             key={index}
             onClick={() => setActiveTab(index)}
-            className={`whitespace-nowrap border-b-2 px-6 py-3 text-xs font-medium tracking-wide transition-all ${activeTab === index ? "border-gray-500 font-bold text-gray-200" : "border-transparent text-gray-400 hover:text-gray-200"}`}
-          >
-            {tab.title}
-          </button>
-        ))}
-      </div>
-
-      <div className="relative w-full grow">
-        <div className={cn("tab-content h-full", tabs?.[activeTab]?.className)}>
-          {tabs[activeTab]?.content}
+            className={`whitespace-nowrap border-b-2 px-6 py-3 text-base font-medium tracking-wide transition-all ${activeTab === index ? "border-gray-500 font-bold text-gray-200" : "border-transparent text-gray-400 hover:text-gray-200"}`}>
+              {tab.title}
+            </button>
+          ))}
+        </div>
+        <div className="relative w-full grow">
+          <div className={cn("absolute inset-0 overflow-auto", tabs?.[activeTab]?.className)}>
+            {tabs[activeTab]?.content}
+          </div>
         </div>
       </div>
     </div>

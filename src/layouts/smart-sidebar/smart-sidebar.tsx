@@ -31,7 +31,7 @@ export default function SmartSidebar(
                     flex flex-col gap-3
                     border
                     border-gray-500
-                    bg-black/70 text-white
+                    bg-black/85 text-white
                     pointer-events-auto
                     `,
                     className

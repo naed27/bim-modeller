@@ -15,9 +15,13 @@ export async function setupIfcLoader() {
 export async function loadIfcFile({
   onLoadEnd,
   onLoadStart,
+  onClearCallback,
+  onSuccessfulLoad,
 }:{
   onLoadEnd?: (...args: any) => void,
   onLoadStart?: (...args: any) => void,
+  onClearCallback?: (...args: any) => void,
+  onSuccessfulLoad?: (...args: any) => void,
 }) {
   return new Promise<void>((resolve, reject) => {
     const input = document.createElement('input')
@@ -31,7 +35,7 @@ export async function loadIfcFile({
 
       try {
         
-        clearFragments()
+        clearFragments({onClearCallback})
         const data = await file.arrayBuffer()
         const buffer = new Uint8Array(data)
 
@@ -42,7 +46,7 @@ export async function loadIfcFile({
             },
           },
         })
-        
+        onSuccessfulLoad?.()
         resolve()
       } catch (err) {
         reject(err)

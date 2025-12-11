@@ -17,7 +17,15 @@ export default function useBimViewerLogic() {
     const modals = useBimViewerModals()
     
     const bimEngineLogic = useBimEngineLogic({
-        onLoadStartCallback: modals?.loadFileModalLogic?.closeModal
+        onLoadStartCallback: ()=>{
+            modals?.loadFileModalLogic?.closeModal?.()
+            sidebarLeftLogic?.closeMenu?.()
+            sidebarRightLogic?.closeMenu?.()
+        },
+        onLoadEndCallback: ()=>{
+            sidebarLeftLogic?.openMenu?.({tabIndex: 0})
+            sidebarRightLogic?.openMenu?.({tabIndex: 0})
+        }
     })
 
     return {

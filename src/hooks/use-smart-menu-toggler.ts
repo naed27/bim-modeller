@@ -1,13 +1,28 @@
 import { useState, useCallback } from "react";
 
-export default function useSmartMenuToggler(initialValue = false) {
-  const [showMenu, setShowMenu] = useState<boolean>(initialValue);
+export default function useSmartMenuToggler({
+  initialValue = false,
+  enableContextOnOpen = false,
+}:{
+  initialValue?: boolean,
+  enableContextOnOpen?: boolean,
+}) {
 
-  const toggleMenu = useCallback(() => setShowMenu((current) => !current), []);
+  const [contextValue, setContextValue] = useState<any>(null)
 
-  const openMenu = useCallback(() => setShowMenu(true), []);
+  const [showMenu, setShowMenu] = useState<boolean>(initialValue)
 
-  const closeMenu = useCallback(() => setShowMenu(false), []);
+  const toggleMenu = useCallback(() => setShowMenu((current) => !current), [])
+
+  const openMenu = useCallback((payload?: any) => {
+    setShowMenu(true)
+    enableContextOnOpen && setContextValue(payload)
+  }, [enableContextOnOpen])
+
+  const closeMenu = useCallback(() => {
+    setShowMenu(false)
+    setContextValue(null)
+  }, [])
 
   return {
     showMenu,
@@ -15,5 +30,7 @@ export default function useSmartMenuToggler(initialValue = false) {
     closeMenu,
     toggleMenu,
     setShowMenu,
+    contextValue, 
+    setContextValue,
   };
 }

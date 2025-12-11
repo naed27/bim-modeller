@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@andypf/json-viewer": "^2.2.0",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/free-regular-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@nivo/bar": "^0.99.0",
     "@nivo/bullet": "^0.99.0",
     "@nivo/core": "^0.99.0",
@@ -34,6 +38,7 @@
     "pako": "^2.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router": "^7.10.1",
     "react-router-dom": "^7.10.1",
     "stats.js": "^0.17.0",
     "tailwind-merge": "^3.4.0",

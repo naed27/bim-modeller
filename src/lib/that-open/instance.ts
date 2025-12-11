@@ -29,7 +29,7 @@ const generateEngine = async (containerElement: HTMLDivElement) => {
     setupController({ speed: CONTROLLER_SPEED })
     setupHighlighter()
     resetCamera()
-    return {}
+    return ENGINE
 }
 
 const ENGINE = {

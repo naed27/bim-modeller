@@ -6,6 +6,7 @@ import SmartModal from "@/components/smart-modal/smart-modal";
 export default function BimControlPanel() {
 
     const {
+        hasModel,
         sidebarLeftLogic,
         sidebarRightLogic,
         loadFileModalLogic,
@@ -13,26 +14,41 @@ export default function BimControlPanel() {
         handleLoadFragFile,
         handleClearFragments,
         handleDownloadFragFile,
+        handleLoadSampleFragFile,
     } = useContext(BimViewerContext)
 
+    const toggleSideBarLeft = (indexValue?: number)=> {
+        if(sidebarLeftLogic?.contextValue?.tabIndex === indexValue)
+            return sidebarLeftLogic?.toggleMenu?.()
+        return sidebarLeftLogic?.openMenu?.({tabIndex: indexValue})
+    }
+    
+    const toggleSideBarRight = (indexValue?: number)=> {
+        if(sidebarRightLogic?.contextValue?.tabIndex === indexValue)
+            return sidebarRightLogic?.toggleMenu?.()
+        return sidebarRightLogic?.openMenu?.({tabIndex: indexValue})
+    }
+
     return (
-        <div className="flex flex-nowrap gap-2 justify-between w-full">
-            <div className="flex flex-wrap gap-2 justify-start">
-                <SmartButton label="View Charts" onClick={sidebarLeftLogic?.toggleMenu}/>
-                <SmartButton label="View Counts" onClick={sidebarLeftLogic?.toggleMenu}/>
-                <SmartButton label="View Mixed Charts & Counts" onClick={sidebarLeftLogic?.toggleMenu}/>
+        <div className="flex flex-nowrap gap-2 justify-between w-full mt-auto">
+            <div className="flex flex-wrap gap-2 justify-center">
+                <SmartButton  hide={!hasModel} label="View Stats" onClick={()=>toggleSideBarLeft?.(0)}/>
+                <SmartButton  hide={!hasModel} label="View Charts" onClick={()=>toggleSideBarLeft?.(1)}/>
+                <SmartButton  hide={!hasModel} label="View Counts" onClick={()=>toggleSideBarLeft?.(2)}/>
             </div>
             
             <div className="flex flex-wrap gap-2 justify-center">
-                <SmartButton label="Load File" onClick={loadFileModalLogic?.openModal}/>
-                <SmartButton label="Download Fragments" onClick={handleDownloadFragFile}/>
-                <SmartButton label="Clear Canvas" onClick={handleClearFragments}/>
+                <SmartButton hide={hasModel} label="Upload File" onClick={loadFileModalLogic?.openModal}/>
+                <SmartButton hide={!hasModel} label="Upload New File" onClick={loadFileModalLogic?.openModal}/>
+                <SmartButton hide={hasModel} label="Load Sample File" onClick={handleLoadSampleFragFile}/>
+                <SmartButton hide={!hasModel} label="Download Fragments" onClick={handleDownloadFragFile}/>
+                <SmartButton hide={!hasModel} label="Clear Canvas" onClick={handleClearFragments}/>
             </div>
 
-            <div className="flex flex-wrap gap-2 justify-end">
-                <SmartButton label="View Mixed Charts & Counts" onClick={sidebarRightLogic?.toggleMenu}/>
-                <SmartButton label="View Counts" onClick={sidebarRightLogic?.toggleMenu}/>
-                <SmartButton label="View Charts" onClick={sidebarRightLogic?.toggleMenu}/>
+            <div className="flex flex-wrap gap-2 justify-center">
+                <SmartButton hide={!hasModel} label="View Counts" onClick={()=>toggleSideBarRight?.(2)}/>
+                <SmartButton hide={!hasModel} label="View Charts" onClick={()=>toggleSideBarRight?.(1)}/>
+                <SmartButton hide={!hasModel} label="View Stats" onClick={()=>toggleSideBarRight?.(0)}/>
             </div>
 
             <SmartModal {...loadFileModalLogic}>

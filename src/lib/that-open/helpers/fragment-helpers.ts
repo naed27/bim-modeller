@@ -21,27 +21,45 @@ export function setupFragmentsManager() {
     if (model.object && ENGINE.world?.scene?.three) ENGINE.world.scene.three.add(model.object)
     if (ENGINE.fragments?.core) ENGINE.fragments.core.update(true)
   })
-
 }
 
-export const clearFragments = () => {
-  ENGINE.fragments.core.update(true)
-  ENGINE.fragments.list.forEach((model) => {
-    model?.dispose?.()
-    ENGINE.world.scene.three.remove(model.object)
-  })
-  
-  resetCamera()
-  ENGINE.fragments.list.clear()
-  ENGINE.fragments.core.update(true)
+export const clearFragments = async ({
+  onLoadEnd,
+  onLoadStart,
+  onClearCallback,
+}:{
+  onLoadEnd?: (...args: any) => void,
+  onLoadStart?: (...args: any) => void,
+  onClearCallback?: (...args: any) => void,
+}={}) => {
+  try{
+  onLoadStart?.()
+    ENGINE.fragments.core.update(true)
+    for (const [key, model] of ENGINE.fragments.list) {
+        await model?.dispose?.()
+        ENGINE.world.scene.three.remove(model?.object)
+        ENGINE.fragments.list.delete(key)
+    }
+    ENGINE.fragments.list?.clear()
+    resetCamera()
+    ENGINE.fragments.list.clear()
+    ENGINE.fragments.core.update(true)
+    onClearCallback?.()
+  }catch(err){}finally{
+    onLoadEnd?.()
+  }
 }
 
 export async function loadFragFile({
   onLoadEnd,
   onLoadStart,
+  onClearCallback,
+  onSuccessfulLoad,
 }:{
   onLoadEnd?: (...args: any) => void,
   onLoadStart?: (...args: any) => void,
+  onClearCallback?: (...args: any) => void,
+  onSuccessfulLoad?: (...args: any) => void,
 }): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     const input = document.createElement('input')
@@ -54,7 +72,7 @@ export async function loadFragFile({
       if (!file) return reject()
 
       try {
-        clearFragments()
+        clearFragments({onClearCallback})
         const data = await file.arrayBuffer()
         const buffer = new Uint8Array(data)
         
@@ -63,6 +81,7 @@ export async function loadFragFile({
           camera: ENGINE.world.camera.three,
         })
 
+        onSuccessfulLoad?.()
         resolve()
       } catch (err) {
         reject(err)
@@ -104,5 +123,41 @@ export async function downloadFragments(defaultFileName = DEFAULT_FILE_NAME) {
     link.download = file.name
     link.click()
     URL.revokeObjectURL(link.href)
+  }
+}
+
+export async function loadSampleFragModel({
+  onLoadEnd,
+  onLoadStart,
+  onClearCallback,
+  onSuccessfulLoad,
+}: {
+  onLoadEnd?: (...args: any) => void,
+  onLoadStart?: (...args: any) => void,
+  onClearCallback?: (...args: any) => void,
+  onSuccessfulLoad?: (...args: any) => void,
+}) {
+  onLoadStart?.()
+
+  try {
+      await clearFragments({ onClearCallback })
+
+      const response = await fetch('/test-files/test-model.frag') 
+      if (!response.ok) throw new Error(`Failed to fetch model: ${response.statusText}`)
+
+      const arrayBuffer = await response.arrayBuffer()
+      const buffer = new Uint8Array(arrayBuffer)
+
+      await ENGINE.fragments.core.load(buffer, {
+          modelId: 'test-model.frag',
+          camera: ENGINE.world.camera.three,
+      })
+
+      onSuccessfulLoad?.()
+  } catch (err) {
+      console.error('Error loading sample model:', err)
+      throw err
+  } finally {
+      onLoadEnd?.()
   }
 }

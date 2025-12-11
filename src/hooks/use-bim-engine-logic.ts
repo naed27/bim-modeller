@@ -1,8 +1,8 @@
 
 import ENGINE from "@/lib/that-open/instance"
 import { loadIfcFile } from "@/lib/that-open/helpers/ifc-helpers"
-import { useCallback, useLayoutEffect, useRef, useState } from "react"
-import { clearFragments, downloadFragments, loadFragFile } from "@/lib/that-open/helpers/fragment-helpers"
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { clearFragments, downloadFragments, loadFragFile, loadSampleFragModel } from "@/lib/that-open/helpers/fragment-helpers"
 
 export default function useBimEngineLogic({
     onLoadEndCallback,
@@ -13,6 +13,7 @@ export default function useBimEngineLogic({
 }={}) {
 
     const initialized = useRef(false)
+    const [engine, setEngine] = useState<any>(null)
     const containerRef = useRef<HTMLDivElement>(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -25,14 +26,19 @@ export default function useBimEngineLogic({
         setIsLoading?.(false)
         onLoadEndCallback?.()
     }
-
+    
     const initializeWorld = useCallback(async()=>{
         if (initialized.current) return
         initialized.current = true
         if (!containerRef.current) return
-        await ENGINE.generateEngine(containerRef.current)
+        const worldEngine = await ENGINE.generateEngine(containerRef.current)
+        setEngine(worldEngine)
     },[])
 
+    const hasModel = useMemo(()=>{
+        return (engine?.fragments?.list?.size ?? 0) > 0
+    },[engine?.fragments?.list?.size])
+    
     useLayoutEffect(() => { 
         initializeWorld?.() 
     }, [initializeWorld])
@@ -41,12 +47,20 @@ export default function useBimEngineLogic({
     
     const handleLoadFragFile = async ()=> await loadFragFile?.({ onLoadStart,  onLoadEnd })
 
+    const handleLoadSampleFragFile = async ()=> await loadSampleFragModel?.({ onLoadStart,  onLoadEnd })
+
+    const handleClearFragments = async ()=> await clearFragments?.({ onLoadStart,  onLoadEnd })
+
+    const handleDownloadFragFile = ()=> downloadFragments?.()
+
     return {
+        hasModel,
         containerRef,
         handleLoadIfcFile,
         handleLoadFragFile,
+        handleClearFragments,
+        handleDownloadFragFile,
         isLoading, setIsLoading,
-        handleClearFragments: clearFragments,
-        handleDownloadFragFile: ()=>downloadFragments?.(),
+        handleLoadSampleFragFile,
     }
 }

@@ -8,7 +8,7 @@ export default function useSmartSidebarLogic(props:{
 
     const { isOpen = false } = props
 
-    const menuTogglerLogic = useSmartMenuToggler(isOpen)
+    const menuTogglerLogic = useSmartMenuToggler({initialValue: isOpen, enableContextOnOpen: true})
 
     return {
         ...props,
