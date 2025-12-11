@@ -40,7 +40,7 @@ export default function BimControlPanel() {
             <div className="flex flex-wrap gap-2 justify-center">
                 <SmartButton hide={hasModel} label="Upload File" onClick={loadFileModalLogic?.openModal}/>
                 <SmartButton hide={!hasModel} label="Upload New File" onClick={loadFileModalLogic?.openModal}/>
-                <SmartButton hide={hasModel} label="Try Sample File!" onClick={handleLoadSampleFragFile}/>
+                <SmartButton hide={hasModel} label="View Demo File" onClick={handleLoadSampleFragFile}/>
                 <SmartButton hide={!hasModel} label="Download Fragments" onClick={handleDownloadFragFile}/>
                 <SmartButton hide={!hasModel} label="Clear Canvas" onClick={handleClearFragments}/>
             </div>
