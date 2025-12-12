@@ -11,7 +11,7 @@ const tabs = [
   {
     title: 'Stats',
     content: (
-      <div className='flex h-full flex-col gap-5 justify-center overflow-hidden'>
+      <div className='flex h-full flex-col gap-5'>
         <div>
           <div className='flex w-full h-full gap-2 content-start'>
             <div className='grow flex flex-wrap gap-2'>
@@ -22,7 +22,7 @@ const tabs = [
             </div>
           </div>
         </div>
-        <div className='grow w-full flex'>
+        <div className='grow w-full flex min-h-[170px]'>
           <SmartChartDemo className='grow' type={'swarmplot'} refreshDataInterval={20000}/>
         </div>
         <div>
