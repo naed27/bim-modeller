@@ -57,7 +57,7 @@ const tabs = [
           {getRandomizedCards(PERCENTAGE_CARDS_POOL, 4, "percentage", 10, 100)?.map((item, idx) => <PercentageCard key={`${item?.label}${idx}`} {...item}/>)}
         </div>
         <div className='grow flex flex-wrap gap-2'>
-          {getRandomizedCards(COUNT_CARDS_POOL, 18, "percentage", 1, 20)?.map((item, idx) => <CountCard key={`${item?.label}${idx}`} {...item}/>)}
+          {getRandomizedCards(COUNT_CARDS_POOL, 18, "count", 1, 20)?.map((item, idx) => <CountCard key={`${item?.label}${idx}`} {...item}/>)}
         </div>
       </div>
     ),
