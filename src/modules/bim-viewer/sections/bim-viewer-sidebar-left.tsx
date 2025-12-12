@@ -10,11 +10,12 @@ import { COUNT_CARDS_POOL, getRandomizedCards, PERCENTAGE_CARDS_POOL } from "@/m
 const tabs = [
   {
     title: 'Stats',
+    className: 'flex',
     content: (
       <div className='flex h-full flex-col gap-5'>
         <div>
-          <div className='flex w-full h-full gap-2 content-start'>
-            <div className='grow flex flex-wrap gap-2'>
+          <div className='flex w-full h-full gap-2'>
+            <div className='grow flex flex-wrap gap-2 content-start'>
               {getRandomizedCards(COUNT_CARDS_POOL, 4, "count", 1, 20)?.map((item, idx) => <CountCard key={`${item?.label}${idx}`} {...item}/>)}
             </div>
             <div className='flex flex-col gap-2'>

@@ -34,7 +34,7 @@ export const TabsNavigator = ({
             </button>
           ))}
         </div>
-        <div className="relative w-full grow">
+        <div className="relative w-full grow overflow-hidden">
           <div className={cn("absolute inset-0 overflow-auto", tabs?.[activeTab]?.className)}>
             {tabs[activeTab]?.content}
           </div>

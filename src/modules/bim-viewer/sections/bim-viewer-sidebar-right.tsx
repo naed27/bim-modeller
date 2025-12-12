@@ -10,16 +10,17 @@ import { COUNT_CARDS_POOL, getRandomizedCards, PERCENTAGE_CARDS_POOL } from "@/m
 const tabs = [
   {
     title: 'Stats',
+    className: 'flex',
     content: (
       <div className='flex h-full flex-col gap-5'>
         <div>
-          <div className='flex w-full h-full gap-2 content-start'>
-            <div className='grow flex flex-wrap gap-2'>
+          <div className='flex w-full h-full gap-2'>
+            <div className='grow flex flex-wrap gap-2 content-start'>
               {getRandomizedCards(COUNT_CARDS_POOL, 2, "count", 1, 20)?.map((item, idx) => <CountCard key={`${item?.label}${idx}`} {...item}/>)}
             </div>
           </div>
         </div>
-        <div className='grow w-full flex min-h-[170px]'>
+        <div className='grow flex min-h-[170px]'>
           <SmartChartDemo className='grow' type={'stream'} refreshDataInterval={20000}/>
         </div>
         <div>
