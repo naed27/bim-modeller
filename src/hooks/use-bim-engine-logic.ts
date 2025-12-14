@@ -1,4 +1,3 @@
-
 import ENGINE from "@/lib/that-open/instance"
 import { loadIfcFile } from "@/lib/that-open/helpers/ifc-helpers"
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
@@ -52,6 +51,7 @@ export default function useBimEngineLogic({
     const handleClearFragments = async ()=> await clearFragments?.({ onLoadStart,  onLoadEnd })
 
     const handleDownloadFragFile = ()=> downloadFragments?.()
+
 
     return {
         hasModel,

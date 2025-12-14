@@ -9,7 +9,7 @@ export function setupHighlighter() {
             opacity: 1,
             renderedFaces: 0,
             transparent: false,
-            color: new THREE.Color("#bcf124"),
+            color: new THREE.Color("lightblue"),
         }
     })
 

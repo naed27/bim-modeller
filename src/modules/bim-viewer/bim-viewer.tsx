@@ -1,13 +1,13 @@
-import '@/lib/that-open/instance'
+import '@/lib/that-open/instance';
 import { createContext } from "react";
-import BimViewerCanvas from './components/bim-viewer-canvas'
-import useBimViewerLogic from './hooks/use-bim-viewer-logic'
+import BimViewerCanvas from './components/bim-viewer-canvas';
+import useBimViewerLogic from './hooks/use-bim-viewer-logic';
 import BimControlPanel from './components/bim-control-panel';
 import BimViewerUIOverlay from './layouts/bim-viewer-ui-overlay';
 import BimViewerWindowPool from './layouts/bim-viewer-window-pool';
 import BimViewerSidebarLeft from './sections/bim-viewer-sidebar-left';
 import BimViewerSidebarRight from './sections/bim-viewer-sidebar-right';
-import LoadingSpinnerInAModal from "@/components/ui/loading-spinner-in-a-modal"
+import LoadingSpinnerInAModal from "@/components/ui/loading-spinner-in-a-modal";
 
 export const BimViewerContext = createContext({} as ReturnType<typeof useBimViewerLogic>);
 
