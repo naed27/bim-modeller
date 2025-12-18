@@ -2,14 +2,19 @@ import { useContext } from "react";
 import { BimViewerContext } from "../bim-viewer";
 import SmartButton from "@/components/ui/smart-button";
 import SmartModal from "@/components/smart-modal/smart-modal";
+import { isTotallyEmpty } from "@/helpers/general-helpers";
 
 export default function BimControlPanel() {
 
     const {
+        markers,
         hasModel,
+        showMarkers,
         sidebarLeftLogic,
         sidebarRightLogic,
         loadFileModalLogic,
+        setShowMarkers,
+
         handleLoadIfcFile,
         handleLoadFragFile,
         handleClearFragments,
@@ -42,6 +47,8 @@ export default function BimControlPanel() {
                 <SmartButton hide={!hasModel} label="Upload New File" onClick={loadFileModalLogic?.openModal}/>
                 <SmartButton hide={hasModel} label="View Demo File" onClick={handleLoadSampleFragFile}/>
                 <SmartButton hide={!hasModel} label="Download Fragments" onClick={handleDownloadFragFile}/>
+                <SmartButton hide={showMarkers || isTotallyEmpty(markers)} label="Show Markers" onClick={()=>setShowMarkers(true)}/>
+                <SmartButton hide={!showMarkers || isTotallyEmpty(markers)} label="Hide Markers" onClick={()=>setShowMarkers(false)}/>
                 <SmartButton hide={!hasModel} label="Clear Canvas" onClick={handleClearFragments}/>
             </div>
 

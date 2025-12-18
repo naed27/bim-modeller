@@ -34,6 +34,7 @@ export default function useBimEngineLogic({
     const containerRef = useRef<HTMLDivElement>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [markers, setMarkers] = useState<ThreeMarker[]>([])
+    const [showMarkers, setShowMarkers] = useState<boolean>(true)
 
     const onLoadStart = () => {
         setIsLoading?.(true)
@@ -129,5 +130,6 @@ export default function useBimEngineLogic({
         handleDownloadFragFile,
         isLoading, setIsLoading,
         handleLoadSampleFragFile,
+        showMarkers, setShowMarkers,
     }
 }

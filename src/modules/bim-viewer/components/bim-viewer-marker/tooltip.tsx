@@ -27,7 +27,9 @@ export default function Tooltip({
             hover:bg-blue-100
           "
         >
-            {description && <div className="font-medium cursor-text whitespace-nowrap">
+            {description && <div 
+            style={{ userSelect: 'none' }}
+            className="font-medium cursor-pointer whitespace-nowrap">
               {description}
             </div>}
             <div className="flex gap-2 justify-center items-center">
