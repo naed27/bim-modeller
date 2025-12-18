@@ -4,6 +4,7 @@ import useSmartModalLogic, {
   UseSmartModalLogicProps,
 } from "./hooks/use-smart-modal-logic";
 import FormButtonSet from "../form-button-set";
+import { createPortal } from "react-dom";
 
 export default function SmartModal({
   children,
@@ -57,7 +58,7 @@ export default function SmartModal({
 
   if (!showModal || hideModal) return null;
 
-  return (
+  return createPortal(
     <div
     role="dialog"
     aria-modal="true"
@@ -169,5 +170,5 @@ export default function SmartModal({
         )}
       </div>
     </div>
-  );
+  ,document.body);
 }

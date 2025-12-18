@@ -91,7 +91,7 @@ export default function FormButtonSet({
                 onClick={onConfirm}
                 disabled={disabled || disableConfirmButton}
                 className={cn(
-                  `flex items-center gap-2 bg-primary text-gray-500`,
+                  `flex items-center gap-2 bg-primary`,
                   confirmButtonClassName
                 )}
               >

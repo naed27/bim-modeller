@@ -25,7 +25,7 @@ const generateEngine = async (containerElement: HTMLDivElement) => {
     await setupWorld(containerElement)
     await setupIfcLoader()
     setupFragmentsManager()
-    setupController({ speed: CONTROLLER_SPEED })
+    // setupController({ speed: CONTROLLER_SPEED })
     resetCamera()
     return ENGINE
 }

@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import ENGINE from "../instance";
-import * as FRAGS from "@thatopen/fragments"
 
 export const raycast = async (data: {
   camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;

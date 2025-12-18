@@ -43,6 +43,7 @@ export const clearFragments = async ({
     ENGINE.fragments.list?.clear()
     resetCamera()
     ENGINE.fragments.list.clear()
+    ENGINE.marker.dispose?.()
     ENGINE.fragments.core.update(true)
     onClearCallback?.()
   }catch(err){}finally{

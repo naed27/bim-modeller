@@ -7,7 +7,12 @@ export default function useBimViewerModals() {
         modalHeaderText: 'Select which file to upload',
     })
 
+    const confirmationModalLogic = useSmartModalLogic({
+        closeButton: true,
+    });
+
     return {
-        loadFileModalLogic
+        loadFileModalLogic,
+        confirmationModalLogic,
     }
 }

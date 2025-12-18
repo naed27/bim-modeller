@@ -1,11 +1,11 @@
 import { Vector3, Matrix4 } from "three"
 import ENGINE from "@/lib/that-open/instance"
 
-const TARGET = new Vector3()
-const POSITION = new Vector3()
-const FORWARD = new Vector3()
-const RIGHT = new Vector3()
-const UP = new Vector3(0, 1, 0)
+export const TARGET = new Vector3()
+export const POSITION = new Vector3()
+export const FORWARD = new Vector3()
+export const RIGHT = new Vector3()
+export const UP = new Vector3(0, 1, 0)
 
 type ControllerOptions = {
     speed?: number

@@ -1,7 +1,21 @@
+import { 
+    useRef, 
+    useMemo, 
+    useState,
+    useCallback, 
+    useLayoutEffect, 
+} from "react"
+import { 
+    loadFragFile, 
+    clearFragments, 
+    downloadFragments, 
+    loadSampleFragModel,
+} from "@/lib/that-open/helpers/fragment-helpers"
+import * as THREE from "three"
+import { ThreeMarker } from "@/lib/types"
 import ENGINE from "@/lib/that-open/instance"
 import { loadIfcFile } from "@/lib/that-open/helpers/ifc-helpers"
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { clearFragments, downloadFragments, loadFragFile, loadSampleFragModel } from "@/lib/that-open/helpers/fragment-helpers"
+import { raycast } from "@/lib/that-open/helpers/raycast-helpers"
 
 export default function useBimEngineLogic({
     onLoadEndCallback,
@@ -11,10 +25,15 @@ export default function useBimEngineLogic({
     onLoadStartCallback?: (...args: any)=>any
 }={}) {
 
+    const isDragging = useRef(false)
+    const mouse = useRef(new THREE.Vector2())
+    const mouseDownPos = useRef({ x: 0, y: 0 })
+
     const initialized = useRef(false)
     const [engine, setEngine] = useState<any>(null)
     const containerRef = useRef<HTMLDivElement>(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [markers, setMarkers] = useState<ThreeMarker[]>([])
 
     const onLoadStart = () => {
         setIsLoading?.(true)
@@ -32,6 +51,7 @@ export default function useBimEngineLogic({
         if (!containerRef.current) return
         const worldEngine = await ENGINE.generateEngine(containerRef.current)
         setEngine(worldEngine)
+        setMarkers?.([])
     },[])
 
     const hasModel = useMemo(()=>{
@@ -48,16 +68,63 @@ export default function useBimEngineLogic({
 
     const handleLoadSampleFragFile = async ()=> await loadSampleFragModel?.({ onLoadStart,  onLoadEnd })
 
-    const handleClearFragments = async ()=> await clearFragments?.({ onLoadStart,  onLoadEnd })
+    const handleClearFragments = async ()=> {
+        setMarkers?.([])
+        await clearFragments?.({ onLoadStart,  onLoadEnd })
+    }
 
     const handleDownloadFragFile = ()=> downloadFragments?.()
 
+    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+        isDragging.current = false
+        mouseDownPos.current = { x: e.clientX, y: e.clientY }
+    }, [])
+
+    const handleMouseMove = useCallback((e: React.MouseEvent) => {
+        const dx = e.clientX - mouseDownPos.current.x
+        const dy = e.clientY - mouseDownPos.current.y
+        if (Math.sqrt(dx*dx + dy*dy) > 3) isDragging.current = true
+    }, [])
+
+    const handleAddMarker = useCallback(async (e: React.MouseEvent) => {
+        if (isDragging.current) return
+
+        mouse.current.x = e.clientX
+        mouse.current.y = e.clientY
+
+        const result = await raycast({
+            mouse: mouse.current,
+            camera: ENGINE.world.camera.three,
+            dom: ENGINE.world.renderer!.three.domElement!,
+        })
+
+        if (!result?.point) return
+
+        const newMarker = {
+            id: crypto.randomUUID?.(),
+            objectVector3Coordinates: result.point,
+        }
+        
+        setMarkers((currentMarkers)=>[...currentMarkers, newMarker])
+
+        // const flagDiv = document.createElement("div")
+        // flagDiv.innerText = "🚩"
+        // flagDiv.style.fontSize = "24px"
+        // flagDiv.style.userSelect = "none"
+        // flagDiv.style.pointerEvents = "none"
+        // ENGINE.marker.create(ENGINE.world, flagDiv, result.point, true)
+
+    }, [])
 
     return {
         hasModel,
         containerRef,
+        handleMouseDown,
+        handleMouseMove,
+        handleAddMarker,
         handleLoadIfcFile,
         handleLoadFragFile,
+        markers, setMarkers,
         handleClearFragments,
         handleDownloadFragFile,
         isLoading, setIsLoading,

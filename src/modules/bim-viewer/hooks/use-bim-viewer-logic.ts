@@ -1,5 +1,7 @@
 import useBimViewerModals from "./use-bim-viewer-modals"
 import useBimEngineLogic from "@/hooks/use-bim-engine-logic"
+import { CONTROLLER_SPEED } from "@/lib/that-open/constants"
+import { useBimViewerController } from "./use-bim-viewer-controller"
 import useSmartSidebarLogic from "@/layouts/smart-sidebar/use-smart-sidebar-logic"
 
 export default function useBimViewerLogic() {
@@ -28,8 +30,11 @@ export default function useBimViewerLogic() {
         }
     })
 
+    const canvasController = useBimViewerController({speed: CONTROLLER_SPEED})
+
     return {
         ...bimEngineLogic,
+        canvasController,
         sidebarLeftLogic,
         sidebarRightLogic,  
         ...modals,
