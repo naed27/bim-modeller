@@ -45,6 +45,7 @@ export const clearFragments = async ({
     ENGINE.fragments.list.clear()
     ENGINE.marker.dispose?.()
     ENGINE.fragments.core.update(true)
+    ENGINE.model = undefined
     onClearCallback?.()
   }catch(err){}finally{
     onLoadEnd?.()
@@ -149,10 +150,12 @@ export async function loadSampleFragModel({
       const arrayBuffer = await response.arrayBuffer()
       const buffer = new Uint8Array(arrayBuffer)
 
-      await ENGINE.fragments.core.load(buffer, {
+      const model = await ENGINE.fragments.core.load(buffer, {
           modelId: 'test-model.frag',
           camera: ENGINE.world.camera.three,
       })
+
+      ENGINE.model = model
 
       onSuccessfulLoad?.()
   } catch (err) {

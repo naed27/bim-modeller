@@ -1,10 +1,11 @@
 import * as OBC from "@thatopen/components"
-import { CONTROLLER_SPEED } from "./constants"
 import * as OBF from "@thatopen/components-front"
+import { GeneralEditor } from "./general-editor"
+import { FragmentsModel } from "@thatopen/fragments"
 import { resetCamera } from "./helpers/camera-helpers"
+import { setupEditor } from "./helpers/general-editor"
 import { setupWorld }  from "@/lib/that-open/helpers/world-helpers"
 import { setupIfcLoader } from "@/lib/that-open/helpers/ifc-helpers"
-import { setupController } from "@/lib/that-open/helpers/controller-helpers"
 import { setupFragmentsManager } from "@/lib/that-open/helpers/fragment-helpers"
 
 const components = new OBC.Components()
@@ -25,7 +26,7 @@ const generateEngine = async (containerElement: HTMLDivElement) => {
     await setupWorld(containerElement)
     await setupIfcLoader()
     setupFragmentsManager()
-    // setupController({ speed: CONTROLLER_SPEED })
+    setupEditor()
     resetCamera()
     return ENGINE
 }
@@ -40,6 +41,8 @@ const ENGINE = {
     components,
     highlighter,
     generateEngine,
+    model: undefined as (undefined | FragmentsModel),
+    generalEditor: undefined as (undefined | GeneralEditor),
 }
 
 export default ENGINE

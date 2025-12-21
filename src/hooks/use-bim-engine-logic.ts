@@ -34,7 +34,8 @@ export default function useBimEngineLogic({
     const containerRef = useRef<HTMLDivElement>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [markers, setMarkers] = useState<ThreeMarker[]>([])
-    const [showMarkers, setShowMarkers] = useState<boolean>(true)
+    const [isEditMode, setIsEditMode] = useState<boolean>(false)
+    const [showMarkers, setShowMarkers] = useState<boolean>(false)
 
     const onLoadStart = () => {
         setIsLoading?.(true)
@@ -89,6 +90,7 @@ export default function useBimEngineLogic({
 
     const handleAddMarker = useCallback(async (e: React.MouseEvent) => {
         if (isDragging.current) return
+        if(!showMarkers) return
 
         mouse.current.x = e.clientX
         mouse.current.y = e.clientY
@@ -108,14 +110,7 @@ export default function useBimEngineLogic({
         
         setMarkers((currentMarkers)=>[...currentMarkers, newMarker])
 
-        // const flagDiv = document.createElement("div")
-        // flagDiv.innerText = "🚩"
-        // flagDiv.style.fontSize = "24px"
-        // flagDiv.style.userSelect = "none"
-        // flagDiv.style.pointerEvents = "none"
-        // ENGINE.marker.create(ENGINE.world, flagDiv, result.point, true)
-
-    }, [])
+    }, [showMarkers])
 
     return {
         hasModel,
@@ -130,6 +125,7 @@ export default function useBimEngineLogic({
         handleDownloadFragFile,
         isLoading, setIsLoading,
         handleLoadSampleFragFile,
+        isEditMode, setIsEditMode,
         showMarkers, setShowMarkers,
     }
 }

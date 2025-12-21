@@ -24,10 +24,6 @@ export default function useBimViewerLogic() {
             sidebarLeftLogic?.closeMenu?.()
             sidebarRightLogic?.closeMenu?.()
         },
-        onLoadEndCallback: ()=>{
-            sidebarLeftLogic?.openMenu?.({tabIndex: 0})
-            sidebarRightLogic?.openMenu?.({tabIndex: 0})
-        }
     })
 
     const canvasController = useBimViewerController({speed: CONTROLLER_SPEED})

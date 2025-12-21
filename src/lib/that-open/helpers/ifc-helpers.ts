@@ -39,13 +39,16 @@ export async function loadIfcFile({
         const data = await file.arrayBuffer()
         const buffer = new Uint8Array(data)
 
-        await ENGINE.ifcLoader.load(buffer, false, file.name, {
+        const model = await ENGINE.ifcLoader.load(buffer, false, file.name, {
           processData: {
             progressCallback: (progress) => {
               console.log('Loading Progress (%): ', (progress * 100));
             },
           },
         })
+
+        ENGINE.model = model
+        
         onSuccessfulLoad?.()
         resolve()
       } catch (err) {

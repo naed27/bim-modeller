@@ -11,7 +11,7 @@ export default function BimViewerWindowPool({
     if(hide) return null
 
     return (
-        <div className="grow flex gap-2 pt-1">
+        <div className="grow flex gap-2">
             {children}
         </div>
     )

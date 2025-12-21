@@ -1,20 +1,21 @@
+import { cn } from "@/lib/utils";
 import { useContext } from "react";
 import { BimViewerContext } from "../bim-viewer";
 import SmartButton from "@/components/ui/smart-button";
 import SmartModal from "@/components/smart-modal/smart-modal";
-import { isTotallyEmpty } from "@/helpers/general-helpers";
 
-export default function BimControlPanel() {
+export default function BimControlPanelBottom() {
 
     const {
-        markers,
         hasModel,
+        isEditMode,
         showMarkers,
         sidebarLeftLogic,
         sidebarRightLogic,
         loadFileModalLogic,
-        setShowMarkers,
 
+        setIsEditMode,
+        setShowMarkers,
         handleLoadIfcFile,
         handleLoadFragFile,
         handleClearFragments,
@@ -37,9 +38,13 @@ export default function BimControlPanel() {
     return (
         <div className="flex flex-nowrap gap-2 justify-between w-full mt-auto">
             <div className="flex flex-wrap gap-2 justify-center">
-                <SmartButton  hide={!hasModel} label="View Stats" onClick={()=>toggleSideBarLeft?.(0)}/>
-                <SmartButton  hide={!hasModel} label="View Charts" onClick={()=>toggleSideBarLeft?.(1)}/>
-                <SmartButton  hide={!hasModel} label="View Counts" onClick={()=>toggleSideBarLeft?.(2)}/>
+                <SmartButton hide={!hasModel || isEditMode} label="View Stats" onClick={()=>toggleSideBarLeft?.(0)}/>
+                <SmartButton hide={!hasModel || isEditMode} label="View Charts" onClick={()=>toggleSideBarLeft?.(1)}/>
+                <SmartButton hide={!hasModel || isEditMode} label="View Counts" onClick={()=>toggleSideBarLeft?.(2)}/>
+                <SmartButton 
+                hide={!isEditMode} 
+                className={'pointer-events-none'}
+                label={`Double click to select an object`}/>
             </div>
             
             <div className="flex flex-wrap gap-2 justify-center">
@@ -47,15 +52,13 @@ export default function BimControlPanel() {
                 <SmartButton hide={!hasModel} label="Upload New File" onClick={loadFileModalLogic?.openModal}/>
                 <SmartButton hide={hasModel} label="View Demo File" onClick={handleLoadSampleFragFile}/>
                 <SmartButton hide={!hasModel} label="Download Fragments" onClick={handleDownloadFragFile}/>
-                <SmartButton hide={showMarkers || isTotallyEmpty(markers)} label="Show Markers" onClick={()=>setShowMarkers(true)}/>
-                <SmartButton hide={!showMarkers || isTotallyEmpty(markers)} label="Hide Markers" onClick={()=>setShowMarkers(false)}/>
                 <SmartButton hide={!hasModel} label="Clear Canvas" onClick={handleClearFragments}/>
             </div>
 
             <div className="flex flex-wrap gap-2 justify-center">
-                <SmartButton hide={!hasModel} label="View Counts" onClick={()=>toggleSideBarRight?.(2)}/>
-                <SmartButton hide={!hasModel} label="View Charts" onClick={()=>toggleSideBarRight?.(1)}/>
-                <SmartButton hide={!hasModel} label="View Stats" onClick={()=>toggleSideBarRight?.(0)}/>
+                <SmartButton hide={!hasModel || isEditMode} label="View Counts" onClick={()=>toggleSideBarRight?.(2)}/>
+                <SmartButton hide={!hasModel || isEditMode} label="View Charts" onClick={()=>toggleSideBarRight?.(1)}/>
+                <SmartButton hide={!hasModel || isEditMode} label="View Stats" onClick={()=>toggleSideBarRight?.(0)}/>
             </div>
 
             <SmartModal {...loadFileModalLogic}>
