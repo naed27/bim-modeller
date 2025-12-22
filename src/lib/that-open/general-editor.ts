@@ -203,6 +203,11 @@ export class GeneralEditor {
     }
   }
 
+  
+  getControlsMode() {
+    return this._gControls.getMode()
+  }
+
   // This method allows to change between local and global transform controls
 
   setControlsTarget(target = this._controlType) {

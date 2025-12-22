@@ -36,6 +36,7 @@ export default function useBimEngineLogic({
     const [markers, setMarkers] = useState<ThreeMarker[]>([])
     const [isEditMode, setIsEditMode] = useState<boolean>(false)
     const [showMarkers, setShowMarkers] = useState<boolean>(false)
+    const [transformMode, setTransformMode] = useState<'translate' | 'rotate'>('translate')
 
     const onLoadStart = () => {
         setIsLoading?.(true)
@@ -127,5 +128,6 @@ export default function useBimEngineLogic({
         handleLoadSampleFragFile,
         isEditMode, setIsEditMode,
         showMarkers, setShowMarkers,
+        transformMode, setTransformMode,
     }
 }
